@@ -44,13 +44,15 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun showTodaySchedule(course: Course?) {
+        val emptyView = findViewById<TextView>(R.id.tv_empty_home)
+        val cardHome = findViewById<CardHomeView>(R.id.view_home)
+
         checkQueryType(course)
         course?.apply {
             val dayName = DayName.getByNumber(day)
             val time = String.format(getString(R.string.time_format), dayName, startTime, endTime)
             val remainingTime = timeDifference(day, startTime)
 
-            val cardHome = findViewById<CardHomeView>(R.id.view_home)
 
             cardHome.apply {
                 setCourseName(courseName)
@@ -59,11 +61,11 @@ class HomeActivity : AppCompatActivity() {
                 setTime(time)
                 setRemainingTime(remainingTime)
             }
-
         }
 
-        findViewById<TextView>(R.id.tv_empty_home).visibility =
-            if (course == null) View.VISIBLE else View.GONE
+        emptyView.visibility = if (course == null) View.VISIBLE else View.GONE
+        cardHome.visibility = if (course == null) View.GONE else View.VISIBLE
+
     }
 
     private fun checkQueryType(course: Course?) {
